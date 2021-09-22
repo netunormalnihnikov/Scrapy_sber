@@ -17,7 +17,6 @@ class SberParsPipeline:
         self.mongo_base = client.sber_market
 
     def process_item(self, item, spider):
-        # collection = self.mongo_base[spider.name]
         collection = self.mongo_base[spider.name]
         collection.insert_one(item)
         return item
@@ -25,9 +24,7 @@ class SberParsPipeline:
 
 class SberImgPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-
         yield scrapy.Request('https://sbermarket.ru' + item['category_img_url'])
-
         yield scrapy.Request('https://sbermarket.ru' + item['main_category_img_url'])
 
         for val in item['product_img_link']:

@@ -5,8 +5,10 @@
 
 
 # useful for handling different item types with a single interface
+import scrapy
 from itemadapter import ItemAdapter
 from pymongo import MongoClient
+from scrapy.pipelines.images import ImagesPipeline
 
 
 class SberParsPipeline:
@@ -18,4 +20,22 @@ class SberParsPipeline:
         # collection = self.mongo_base[spider.name]
         collection = self.mongo_base[spider.name]
         collection.insert_one(item)
+        return item
+
+
+class SberImgPipeline(ImagesPipeline):
+    def get_media_requests(self, item, info):
+
+        yield scrapy.Request('https://sbermarket.ru' + item['category_img_url'])
+
+        yield scrapy.Request('https://sbermarket.ru' + item['main_category_img_url'])
+
+        for val in item['product_img_link']:
+            link_img = val['original_url']
+            yield scrapy.Request(link_img)
+
+    def item_completed(self, results, item, info):
+        item['category_img_url'] = results[0][1]
+        item['main_category_img_url'] = results[1][1]
+        item['product_img_link'] = [itm[1] for itm in results[2:] if itm[0]]
         return item

@@ -24,8 +24,11 @@ class SberParsPipeline:
 
 class SberImgPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-        yield scrapy.Request('https://sbermarket.ru' + item['category_img_url'])
-        yield scrapy.Request('https://sbermarket.ru' + item['main_category_img_url'])
+        category_img_url = 'https://sbermarket.ru' + item['category_img_url']
+        yield scrapy.Request(category_img_url)
+
+        main_category_img_url = 'https://sbermarket.ru' + item['main_category_img_url']
+        yield scrapy.Request(main_category_img_url)
 
         for val in item['product_img_link']:
             link_img = val['original_url']

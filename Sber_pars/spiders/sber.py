@@ -17,6 +17,7 @@ class SberSpider(scrapy.Spider):
         {'store_name': 'auchan', 'store_id': 70},
         {'store_name': 'magnit_express', 'store_id': 2242},
         {'store_name': 'victoria', 'store_id': 1088},
+        {'store_name': 'vkusvill', 'store_id': 3424},
     ]
     headers = {
         "client-token": "7ba97b6f4049436dab90c789f946ee2f",
@@ -140,6 +141,8 @@ class SberSpider(scrapy.Spider):
             product_stock=data['product']['offer']['stock'],
             product_stock_rate=data['product']['offer']['stock_rate'],
             product_max_stock_rate=data['product']['offer']['max_stock_rate'],
+            product_discounted=data['product']['offer']['discounted'],
+            product_discount=data['product']['offer']['discount'],
             product_unit_price=data['product']['offer']['unit_price'],
             product_description=data['product']['description'],
             product_description_original=data['product']['description_original'],

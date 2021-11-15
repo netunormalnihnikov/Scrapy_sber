@@ -25,6 +25,8 @@ class SberParsItem(scrapy.Item):
     product_stock = scrapy.Field()
     product_stock_rate = scrapy.Field()
     product_max_stock_rate = scrapy.Field()
+    product_discounted = scrapy.Field()
+    product_discount = scrapy.Field()
     product_unit_price = scrapy.Field()
     product_description = scrapy.Field()
     product_description_original = scrapy.Field()

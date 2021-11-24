@@ -9,6 +9,9 @@ import scrapy
 from itemadapter import ItemAdapter
 from pymongo import MongoClient
 from scrapy.pipelines.images import ImagesPipeline
+from PIL import Image
+
+Image.MAX_IMAGE_PIXELS = 1000000000
 
 
 class SberParsPipeline:

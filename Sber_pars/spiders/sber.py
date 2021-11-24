@@ -13,11 +13,14 @@ class SberSpider(scrapy.Spider):
     allowed_domains = ['sbermarket.ru']
     stores = [
         {'store_name': 'metro', 'store_id': 2},
-        {'store_name': 'lenta', 'store_id': 57},
         {'store_name': 'auchan', 'store_id': 70},
         {'store_name': 'magnit_express', 'store_id': 2242},
-        {'store_name': 'victoria', 'store_id': 1088},
         {'store_name': 'vkusvill', 'store_id': 3424},
+        {'store_name': 'victoria', 'store_id': 1088},
+        {'store_name': 'lenta', 'store_id': 57},
+        {'store_name': 'okey', 'store_id': 4542},
+        {'store_name': 'globus', 'store_id': 1373},
+        {'store_name': 'fixpricefd', 'store_id': 1578},
     ]
     headers = {
         "client-token": "7ba97b6f4049436dab90c789f946ee2f",

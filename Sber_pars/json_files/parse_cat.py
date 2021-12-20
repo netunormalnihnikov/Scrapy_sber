@@ -50,16 +50,16 @@ def get_sub_cat(children_lst, counter=True):
 def get_one_line_cat(file):
     final_lst = []
     for category in file:
-        if category["name"] in valid_categories:
-            get_sub_cat(category["children"])
-            for sub_cat in sub_lst:
-                final_lst.append({
-                    "main_category_name": category["name"],
-                    "img_main_category_url": category["icon"]["normal_url"].split("?")[0],
-                    "category_name": sub_cat["name"],
-                    "img_category_url": sub_cat["icon"]["normal_url"].split("?")[0],
-                    "permalink": sub_cat["permalink"],
-                })
+        # if category["name"] in valid_categories:  # Отключение проверки на категории
+        get_sub_cat(category["children"])
+        for sub_cat in sub_lst:
+            final_lst.append({
+                "main_category_name": category["name"],
+                "img_main_category_url": category["icon"]["normal_url"].split("?")[0],
+                "category_name": sub_cat["name"],
+                "img_category_url": sub_cat["icon"]["normal_url"].split("?")[0],
+                "permalink": sub_cat["permalink"],
+            })
     return final_lst
 
 

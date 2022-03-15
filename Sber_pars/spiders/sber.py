@@ -22,7 +22,7 @@ class SberSpider(scrapy.Spider):
         {'store_name': 'globus', 'store_id': 1373},
         {'store_name': 'fixpricefd', 'store_id': 1578},
     ]
-    headers = {
+    headers_for_catalogs = {
         "client-token": "7ba97b6f4049436dab90c789f946ee2f",
         "api-version": "3.0",
     }
@@ -45,7 +45,7 @@ class SberSpider(scrapy.Spider):
             yield response.follow(
                 url,
                 callback=self.parse_products_roll,
-                headers=self.headers,
+                headers=self.headers_for_catalogs,
                 cb_kwargs=_dict,
             )
 
@@ -76,7 +76,7 @@ class SberSpider(scrapy.Spider):
             yield response.follow(
                 url,
                 callback=self.parse_product_block,
-                headers=self.headers,
+                headers=self.headers_for_catalogs,
                 cb_kwargs=kwargs,
                 dont_filter=True,
             )
@@ -89,6 +89,7 @@ class SberSpider(scrapy.Spider):
             yield response.follow(
                 url,
                 callback=self.parse_product,
+                cookies={'a': '_'},
                 cb_kwargs=kwargs,
             )
 

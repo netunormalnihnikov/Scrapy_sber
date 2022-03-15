@@ -46,6 +46,8 @@ DEFAULT_REQUEST_HEADERS = {
    'accept': 'application/json, text/plain, */*',
    'accept-language': 'ru,en;q=0.9',
    'accept-encoding': 'gzip, deflate, br',
+   'Referer': 'https://sbermarket.ru/metro/',
+   'Host': 'sbermarket.ru',
 }
 
 # Enable or disable spider middlewares

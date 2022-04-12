@@ -46,6 +46,7 @@ class SberSpider(scrapy.Spider):
                 url,
                 callback=self.parse_products_roll,
                 headers=self.headers_for_catalogs,
+                cookies={'a': '_'},
                 cb_kwargs=_dict,
             )
 
@@ -77,6 +78,7 @@ class SberSpider(scrapy.Spider):
                 url,
                 callback=self.parse_product_block,
                 headers=self.headers_for_catalogs,
+                cookies={'a': '_'},
                 cb_kwargs=kwargs,
                 dont_filter=True,
             )

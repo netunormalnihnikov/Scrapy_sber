@@ -16,7 +16,7 @@ LOG_ENABLED = True
 LOG_LEVEL = 'ERROR'  # 'DEBUG' 'ERROR'
 LOG_FILE = 'log.txt'
 
-IMAGES_STORE = 'src_img'
+FILES_STORE = 'src_img'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
@@ -72,7 +72,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'Sber_pars.pipelines.SberParsPipeline': 300,
-   'Sber_pars.pipelines.SberImgPipeline': 200,
+   'Sber_pars.pipelines.SberFilesPipeline': 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

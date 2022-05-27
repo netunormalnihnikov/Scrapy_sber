@@ -16,7 +16,6 @@ import mimetypes
 import os
 
 
-
 class SberParsPipeline:
     def __init__(self):
         client = MongoClient('localhost', 27017)
@@ -29,19 +28,32 @@ class SberParsPipeline:
 
 
 class SberFilesPipeline(FilesPipeline):
+    @staticmethod
+    def is_valid_type_img(_url):
+        type_img = _url.split('/')[-2]
+        return True if type_img in ('normal', 'small', 'preview') else False
+
     def get_media_requests(self, item, info):
         category_img_url = 'https://sbermarket.ru' + item['category_img_url']
-        yield scrapy.Request(category_img_url)
+        if self.is_valid_type_img(category_img_url):
+            yield scrapy.Request(category_img_url)
 
         main_category_img_url = 'https://sbermarket.ru' + item['main_category_img_url']
-        yield scrapy.Request(main_category_img_url)
+        if self.is_valid_type_img(main_category_img_url):
+            yield scrapy.Request(main_category_img_url)
 
         for val in item['product_img_link']:
-            link_img = val['original_url']
-            yield scrapy.Request(link_img)
+            link_img_preview = val['preview_url']
+            link_img_small = val['small_url']
+            if self.is_valid_type_img(link_img_preview):
+                yield scrapy.Request(link_img_preview)
+            if self.is_valid_type_img(link_img_small):
+                yield scrapy.Request(link_img_small)
 
     def file_path(self, request, response=None, info=None, *, item=None):
-        media_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
+        name_ext = request.url.split('/')[-1]
+        type_img = request.url.split('/')[-2]
+        media_guid = hashlib.sha1(to_bytes(name_ext)).hexdigest()
         media_ext = os.path.splitext(request.url)[1]
         if media_ext not in mimetypes.types_map:
             url_no_params = request.url.split('?')[0]
@@ -51,10 +63,12 @@ class SberFilesPipeline(FilesPipeline):
                 media_type = mimetypes.guess_type(request.url)[0]
                 if media_type:
                     media_ext = mimetypes.guess_extension(media_type)
-        return f'full/{media_guid}{media_ext}'
+        return f'{type_img}/{media_guid}{media_ext}'
 
     def item_completed(self, results, item, info):
         item['category_img_url'] = results[0][1]
         item['main_category_img_url'] = results[1][1]
-        item['product_img_link'] = [itm[1] for itm in results[2:] if itm[0]]
+        item['product_img_link'] = \
+            {'preview': [itm[1] for itm in results[2:] if itm[0] and itm[1]['path'].split('/')[0] == 'preview'],
+             'small': [itm[1] for itm in results[2:] if itm[0] and itm[1]['path'].split('/')[0] == 'small']}
         return item

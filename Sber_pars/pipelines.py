@@ -34,13 +34,13 @@ class SberFilesPipeline(FilesPipeline):
         return True if type_img in ('normal', 'small', 'preview') else False
 
     def get_media_requests(self, item, info):
-        category_img_url = 'https://sbermarket.ru' + item['category_img_url']
+        category_img_url = item['category_img_url']
         if self.is_valid_type_img(category_img_url):
-            yield scrapy.Request(category_img_url)
+            yield scrapy.Request(category_img_url, headers={'Host': 'storage.yandexcloud.net'})
 
-        main_category_img_url = 'https://sbermarket.ru' + item['main_category_img_url']
+        main_category_img_url = item['main_category_img_url']
         if self.is_valid_type_img(main_category_img_url):
-            yield scrapy.Request(main_category_img_url)
+            yield scrapy.Request(main_category_img_url, headers={'Host': 'storage.yandexcloud.net'})
 
         for val in item['product_img_link']:
             link_img_preview = val['preview_url']

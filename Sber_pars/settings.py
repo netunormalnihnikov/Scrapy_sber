@@ -62,17 +62,17 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 
 # ROTATING_PROXY_LIST_PATH = 'proxy.txt'
-ROTATING_PROXY_LIST = ['45.141.187.103:50852@tYvrJC2B:XzWFqzfA',
-                       '45.141.187.198:57148@tYvrJC2B:XzWFqzfA',
-                       '45.128.128.112:62186@tYvrJC2B:XzWFqzfA',
-                       '195.209.178.25:57205@tYvrJC2B:XzWFqzfA',
-                       '146.19.72.113:63399@tYvrJC2B:XzWFqzfA'
-                       ]
-
-DOWNLOADER_MIDDLEWARES = {
-    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
-}
+# ROTATING_PROXY_LIST = ['45.141.187.103:50852@tYvrJC2B:XzWFqzfA',
+#                        '45.141.187.198:57148@tYvrJC2B:XzWFqzfA',
+#                        '45.128.128.112:62186@tYvrJC2B:XzWFqzfA',
+#                        '195.209.178.25:57205@tYvrJC2B:XzWFqzfA',
+#                        '146.19.72.113:63399@tYvrJC2B:XzWFqzfA'
+#                        ]
+#
+# DOWNLOADER_MIDDLEWARES = {
+#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+# }
 # ROTATING_PROXY_CLOSE_SPIDER =True
 
 # DOWNLOADER_MIDDLEWARES = {

@@ -1,5 +1,4 @@
 import scrapy
-import json
 
 from scrapy import Request
 from scrapy.http import HtmlResponse
@@ -36,9 +35,7 @@ class SberSpider(scrapy.Spider):
             )
 
     def parse(self, response: HtmlResponse, **kwargs):
-        js_dict = self.convert_to_json(response)
-        dict_list = get_one_line_cat(js_dict["categories"])
-
+        dict_list = get_one_line_cat(response.json()["categories"])
         for _dict in dict_list:
             _dict.update(kwargs)
             url = self.get_link_block_products(_dict['permalink'], _dict['store_id'])
@@ -58,20 +55,10 @@ class SberSpider(scrapy.Spider):
             "per_page": 20,
             "sort": "popularity"
         }
-        link = add_or_replace_parameters(f'/api/stores/{store_id}/products', params)
-        return link
-
-    @staticmethod
-    def get_link_products(slug, store_id):
-        return f'/api/stores/{store_id}/products/' + slug
-
-    @staticmethod
-    def convert_to_json(response: HtmlResponse):
-        return json.loads(response.text)
+        return add_or_replace_parameters(f'/api/stores/{store_id}/products', params)
 
     def parse_products_roll(self, response: HtmlResponse, **kwargs):
-        data = self.convert_to_json(response)
-        total_pages = data['meta']['total_pages']
+        total_pages = response.json()['meta']['total_pages']
         for page in range(1, total_pages + 1):
             url = self.get_link_block_products(kwargs['permalink'], kwargs['store_id'], page=page)
             yield response.follow(
@@ -84,10 +71,10 @@ class SberSpider(scrapy.Spider):
             )
 
     def parse_product_block(self, response: HtmlResponse, **kwargs):
-        data = self.convert_to_json(response)
-        for product in data['products']:
+        data = response.json()['products']
+        for product in data:
             slug = product['slug']
-            url = self.get_link_products(slug, kwargs['store_id'])
+            url = f'/api/stores/{kwargs["store_id"]}/products/' + slug
             yield response.follow(
                 url,
                 callback=self.parse_product,
@@ -96,8 +83,7 @@ class SberSpider(scrapy.Spider):
             )
 
     def parse_product(self, response: HtmlResponse, **kwargs):
-        data = self.convert_to_json(response)
-
+        data = response.json()
         if data['product']['manufacturer']:
             manufacturer = data['product']['manufacturer']['name']
         else:

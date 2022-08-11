@@ -36,11 +36,17 @@ class SberFilesPipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         category_img_url = item['category_img_url']
         if self.is_valid_type_img(category_img_url):
-            yield scrapy.Request(category_img_url, headers={'Host': 'storage.yandexcloud.net'})
+            if 'sbermarket.ru' in category_img_url:
+                yield scrapy.Request(category_img_url)
+            else:
+                yield scrapy.Request(category_img_url, headers={'Host': 'storage.yandexcloud.net'})
 
         main_category_img_url = item['main_category_img_url']
         if self.is_valid_type_img(main_category_img_url):
-            yield scrapy.Request(main_category_img_url, headers={'Host': 'storage.yandexcloud.net'})
+            if 'sbermarket.ru' in main_category_img_url:
+                yield scrapy.Request(main_category_img_url)
+            else:
+                yield scrapy.Request(main_category_img_url, headers={'Host': 'storage.yandexcloud.net'})
 
         for val in item['product_img_link']:
             link_img_preview = val['preview_url']

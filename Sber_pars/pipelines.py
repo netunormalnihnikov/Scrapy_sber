@@ -72,8 +72,13 @@ class SberFilesPipeline(FilesPipeline):
         return f'{type_img}/{media_guid}{media_ext}'
 
     def item_completed(self, results, item, info):
-        item['category_img_url'] = results[0][1]
-        item['main_category_img_url'] = results[1][1]
+        if len(results) == 1:  # Если одинаковое изображение у глвной категории и подкатегории
+            item['category_img_url'] = results[0][1]
+            item['main_category_img_url'] = results[0][1]
+        else:  # Если изображения у категорий разные, то загружаются уникальные
+            item['category_img_url'] = results[0][1]
+            item['main_category_img_url'] = results[1][1]
+
         item['product_img_link'] = \
             {'preview': [itm[1] for itm in results[2:] if itm[0] and itm[1]['path'].split('/')[0] == 'preview'],
              'small': [itm[1] for itm in results[2:] if itm[0] and itm[1]['path'].split('/')[0] == 'small']}

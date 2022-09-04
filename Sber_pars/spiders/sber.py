@@ -108,7 +108,7 @@ class SberSpider(scrapy.Spider):
                 'manufacturing_country': manufacturing_country,
             },
         }
-        for _property in data['productProperties']:
+        for _property in data['product_properties']:
             if _property['name'] == 'ingredients':
                 product_properties['product_ingredients'][_property['presentation']] = _property['value']
             elif _property['name'] in {'protein', 'fat', 'carbohydrate', 'energy_value'}:
@@ -137,6 +137,6 @@ class SberSpider(scrapy.Spider):
             product_discount=data['product']['offer']['discount'],
             product_unit_price=data['product']['offer']['unit_price'],
             product_description=data['product']['description'],
-            product_description_original=data['product']['description_original'],
+            product_description_original=data['product']['description'],
             product_properties=product_properties,
         )
